@@ -1,0 +1,19 @@
+#!/usr/bin/python
+from twisted.internet import reactor
+import flistprotocolwsirc
+import ircserver
+import logging
+import os
+mydir=os.path.dirname(os.path.realpath(__file__))
+logging.basicConfig(filename=mydir+os.sep+'irc.log',level=logging.DEBUG,
+         format="%(asctime)s;%(levelname)s;%(message)s",datefmt="%m%d%H%M")
+#flfactory = flistprotocolwsirc.FlistWSFactory("ws://chat.f-list.net:9722", reactor)
+#flfactory = flistprotocolwsirc.FlistWSFactory("wss://chat.f-list.net:9799", reactor)
+ircfactory = ircserver.IRCServerFactory(reactor)
+
+#reactor.connectTCP("chat.f-list.net", 9799, flfactory) #Starts on login now
+reactor.listenTCP(8002, ircfactory)
+#reactor.flfactory=flfactory
+reactor.run()
+
+
