@@ -184,16 +184,18 @@ class Bot:
                 m = ''
             f[self.irc.flist.userEncode(name)]={'status':s,'statusmsg':m,'last_online':x['last_online']}
         on = []
-        off = []
+        offs = []
         for x in f:
             if f[x]['status'] == 'offline':
-                off.append(x+'('+self.timeFormat(f[x]['last_online'])+' ago)')
+                offs.append((f[x]['last_online'],x))
             else:
                 l = x+'('+f[x]['status']+')'
                 if f[x]['statusmsg']!='':
                     l = l +'('+f[x]['statusmsg']+')'
 #                l=l+'('+self.timeFormat(f[x]['last_online'])+' ago)'
                 on.append(l)
+        offs.sort()
+        off = [x[1]+'('+self.timeFormat(x[0])+' ago)' for x in offs]
         ret = 'Online: '
         self.botSay('Online: '+' '.join(on)+'\nOffline: '+' '.join(off))
 
