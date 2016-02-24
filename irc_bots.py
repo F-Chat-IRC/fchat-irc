@@ -241,7 +241,7 @@ class Bot:
             target = self.irc.flist.userDecode(params[0])
         except Exception as e:
             self.botSay(str(e))
-        result = self.irc.flist.getJSONEndpoint('request-deny',target)
+        result = self.irc.flist.getJSONEndpoint('request-deny',str(self.irc.flist.frequests[target]))
         if 'error' not in result or result['error']=='':
             self.botSay('Friend rejected: '+str(params[0]))
         else:
