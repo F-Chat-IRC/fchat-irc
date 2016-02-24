@@ -816,7 +816,7 @@ class FlistProtocol(WebSocketClientProtocol):
             else:
                 request = site+API
         except:
-            logging.error('getJSONEndpoint threw a strange error! Did you somehow put UTF8 into it?')
+            logging.error('getJSONEndpoint threw a strange error with '+str(args)+' Did you somehow put UTF8 into it?')
             return {}
 
         payload = urllib.urlencode({'account':self.account,'ticket':self.ticket})
@@ -836,7 +836,7 @@ class FlistProtocol(WebSocketClientProtocol):
     @traceback
     def getFriendRequests(self):
         '''This function merely fills the friend request data. It should be called on appropriate RTB events.'''
-        self.frequests = [(x['source'],x['id']) for x in self.getJSONEndpoint('request-list')['requests'] if x['dest']==self.nick]
+        self.frequests = {x['source']:x['id'] for x in self.getJSONEndpoint('request-list')['requests'] if x['dest']==self.nick}
 
     @traceback
     def getFriends(self):

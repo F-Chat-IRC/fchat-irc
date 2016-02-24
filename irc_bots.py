@@ -142,7 +142,7 @@ class Bot:
     @traceback
     def bot_info_friend_requests(self,prefix,params):
         self.irc.flist.getFriendRequests()
-        self.botSay('Incoming friend requests:\n'+'\n'.join([self.irc.flist.userEncode(x[0]) for x in self.irc.flist.frequests]))
+        self.botSay('Incoming friend requests:\n'+'\n'.join([self.irc.flist.userEncode(x) for x in self.irc.flist.frequests]))
 
     def timeFormat(self,secs):
         if secs < 3: return str(secs)+'s'
@@ -202,7 +202,7 @@ class Bot:
     @traceback
     def bot_info_friend(self,prefix,params):
         try:
-            target = self.irc.userDecode(params[0])
+            target = self.irc.flist.userDecode(params[0])
         except Exception as e:
             self.botSay(str(e))
         result = self.irc.flist.getJSONEndpoint('request-send',self.irc.flist.nick,target)
@@ -214,7 +214,7 @@ class Bot:
     @traceback
     def bot_info_friend_cancel(self,prefix,params):
         try:
-            target = self.irc.userDecode(params[0])
+            target = self.irc.flist.userDecode(params[0])
         except Exception as e:
             self.botSay(str(e))
         result = self.irc.flist.getJSONEndpoint('request-cancel',target)
@@ -226,10 +226,10 @@ class Bot:
     @traceback
     def bot_info_friend_accept(self,prefix,params):
         try:
-            target = self.irc.userDecode(params[0])
+            target = self.irc.flist.userDecode(params[0])
         except Exception as e:
             self.botSay(str(e))
-        result = self.irc.flist.getJSONEndpoint('request-accept',target)
+        result = self.irc.flist.getJSONEndpoint('request-accept',str(self.irc.flist.frequests[target]))
         if 'error' not in result or result['error']=='':
             self.botSay('Friend accepted: '+str(params[0]))
         else:
@@ -238,7 +238,7 @@ class Bot:
     @traceback
     def bot_info_friend_reject(self,prefix,params):
         try:
-            target = self.irc.userDecode(params[0])
+            target = self.irc.flist.userDecode(params[0])
         except Exception as e:
             self.botSay(str(e))
         result = self.irc.flist.getJSONEndpoint('request-deny',target)
@@ -250,7 +250,7 @@ class Bot:
     @traceback
     def bot_info_friend_remove(self,prefix,params):
         try:
-            target = self.irc.userDecode(params[0])
+            target = self.irc.flist.userDecode(params[0])
         except Exception as e:
             self.botSay(str(e))
         result = self.irc.flist.getJSONEndpoint('friend-remove',target)
@@ -265,14 +265,14 @@ class Bot:
     @traceback
     def bot_info_bookmark_add(self,prefix,params):
         try:
-            target = self.irc.userDecode(params[0])
+            target = self.irc.flist.userDecode(params[0])
         except Exception as e:
             self.botSay(str(e))
         self.botSay(str(self.irc.flist.getJSONEndpoint('bookmark-add',target)))
     @traceback
     def bot_info_bookmark_remove(self,prefix,params):
         try:
-            target = self.irc.userDecode(params[0])
+            target = self.irc.flist.userDecode(params[0])
         except Exception as e:
             self.botSay(str(e))
         self.botSay(str(self.irc.flist.getJSONEndpoint('bookmark-remove',target)))
@@ -280,28 +280,28 @@ class Bot:
     @traceback
     def bot_info_character_customkinks(self,prefix,params):
         try:
-            target = self.irc.userDecode(params[0])
+            target = self.irc.flist.userDecode(params[0])
         except Exception as e:
             self.botSay(str(e))
         self.botSay(str(self.irc.flist.getJSONEndpoint('character-customkinks',target)))
     @traceback
     def bot_info_character_get(self,prefix,params):
         try:
-            target = self.irc.userDecode(params[0])
+            target = self.irc.flist.userDecode(params[0])
         except Exception as e:
             self.botSay(str(e))
         self.botSay(str(self.irc.flist.getJSONEndpoint('character-get',target)))
     @traceback
     def bot_info_character_images(self,prefix,params):
         try:
-            target = self.irc.userDecode(params[0])
+            target = self.irc.flist.userDecode(params[0])
         except Exception as e:
             self.botSay(str(e))
         self.botSay(str(self.irc.flist.getJSONEndpoint('character-images',target)))
     @traceback
     def bot_info_character_info(self,prefix,params):
         try:
-            target = self.irc.userDecode(params[0])
+            target = self.irc.flist.userDecode(params[0])
         except Exception as e:
             self.botSay(str(e))
         self.botSay(str(self.irc.flist.getJSONEndpoint('character-info',target)))
