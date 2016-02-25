@@ -282,7 +282,7 @@ class FlistProtocol(WebSocketClientProtocol):
         msg = msg.split(' ')
         if len(msg[0])>1:
             if msg[0][-1] in [',',':']:
-                for name in self.chars: 
+                for name in self.chars.copy(): 
                     if self.chars[name]['ircname'] == self.userEncode(msg[0][:-1]): #This may have some Unicode magic problems...
                         msg[0]=name+msg[0][-1]
         msg = ' '.join(msg)
