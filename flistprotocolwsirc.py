@@ -6,7 +6,7 @@ import twisted.words.protocols.irc as irc
 import os, sys, re
 import logging
 from collections import defaultdict
-from autobahn.websocket import WebSocketClientProtocol, \
+from autobahn.twisted.websocket import WebSocketClientProtocol, \
                                        WebSocketClientFactory
 
 def defdefaultdict():
