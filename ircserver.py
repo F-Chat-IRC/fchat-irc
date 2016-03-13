@@ -19,6 +19,7 @@ CREATED = datetime.datetime.now().strftime('%M:%H %d/%m/%y')
 
 class IRCServer(irc.IRC):
     def __init__(self,reactor):
+        self.MAXLENGTH=9999999
         self.flist=None
         self.reactor=reactor
         self.reactor.irc = self
@@ -228,8 +229,8 @@ class IRCServer(irc.IRC):
             self.flist.sendMsg('STA '+json.dumps(data))
         else:
             self.serverMsg(irc.RPL_UNAWAY,':You are no longer marked as being away.')
-            sts = str(self.flist.users[self.nick]['status'])
-            stsmsg = str(self.flist.users[self.nick]['statusmsg'])
+            sts = str(self.flist.chars[self.nick]['status'])
+            stsmsg = str(self.flist.chars[self.nick]['statusmsg'])
             if str(sts) in ['online','looking','busy','dnd','away']:
                 data['status']=sts
             else:
