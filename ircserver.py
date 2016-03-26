@@ -231,7 +231,7 @@ class IRCServer(irc.IRC):
             self.serverMsg(irc.RPL_UNAWAY,':You are no longer marked as being away.')
             sts = str(self.flist.chars[self.nick]['status'])
             stsmsg = str(self.flist.chars[self.nick]['statusmsg'])
-            if str(sts) in ['online','looking','busy','dnd','away']:
+            if str(sts) in ['online','looking','busy','dnd']:
                 data['status']=sts
             else:
                 data['status']='online'
