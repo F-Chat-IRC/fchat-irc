@@ -224,21 +224,18 @@ class IRCServer(irc.IRC):
         data = {}
         if params[0]!='':
             self.serverMsg(irc.RPL_NOWAWAY,':You have been marked as being away.')
+            self.flist.oldsts = str(self.flist.chars[self.nick]['status'])
+            self.flist.oldstsmsg = str(self.flist.chars[self.nick]['statusmsg'])
             data['status']='away'
             data['statusmsg']=params[0]
             self.flist.sendMsg('STA '+json.dumps(data))
         else:
             self.serverMsg(irc.RPL_UNAWAY,':You are no longer marked as being away.')
-            sts = str(self.flist.chars[self.nick]['status'])
-            stsmsg = str(self.flist.chars[self.nick]['statusmsg'])
-            if str(sts) in ['online','looking','busy','dnd']:
-                data['status']=sts
+            if str(self.flist.oldsts) in ['online','looking','busy','dnd']:
+                data['status']=self.flist.oldsts
             else:
                 data['status']='online'
-#            if stsmsg is not '{}':
-            data['statusmsg']=stsmsg
-#            else:
-#                data['statusmsg']=''
+            data['statusmsg']=self.flist.oldstsmsg
             self.flist.sendMsg('STA '+json.dumps(data))
 
 #unwritten functions
