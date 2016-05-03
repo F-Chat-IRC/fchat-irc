@@ -2,6 +2,7 @@
 import HTMLParser
 import urllib, urllib2, json
 import time, string
+from twisted.internet.task import LoopingCall
 import twisted.words.protocols.irc as irc
 import os, sys, re
 import logging
@@ -46,7 +47,11 @@ class FlistProtocol(WebSocketClientProtocol):
         self.chans = defaultdict(defdefaultdict)
         self.kinks = {}
         self.sys_params = {}
-
+        self.pinging=None
+        self.expectingping=False
+        self.pingrate=60
+        self.lastping=time.time()
+        self.toomanypings=5
 
     @traceback
     def onConnect(self, response):
@@ -74,6 +79,9 @@ class FlistProtocol(WebSocketClientProtocol):
             self.characters=r['characters']
             self.default_character=r['default_character']
         ircchars = [self.userEncode(x) for x in self.characters]
+        if not self.pinging:
+            self.pinging = LoopingCall(self.cb_PING)
+            self.pinging.start(self.pingrate)
         logging.info('IRC safe char list: '+str(ircchars))
         try:
             num = ircchars.index(character)
@@ -288,6 +296,17 @@ class FlistProtocol(WebSocketClientProtocol):
         msg = ' '.join(msg)
         return msg
 
+#Loop functions
+    @traceback
+    def cb_PING(self):
+        '''An automatic ping callback, every 60 seconds. Check the far end is alive.'''
+        logging.info ('PINGing.')
+        self.sendMsg('PIN')
+        self.expectingping=True
+        if (time.time() - self.lastping) > (self.pingrate*self.toomanypings):
+            logging.warn('Losing connection due to no ping reply.')
+            self.loseConnection()
+
 #These are all callbacks for Flist commands
     @traceback
     def fl_unknown(self,command,prefix,params):
@@ -297,7 +316,12 @@ class FlistProtocol(WebSocketClientProtocol):
     @traceback
     def fl_PIN(self,prefix,params):
         '''System ping.'''
-        self.sendMsg('PIN')
+        if self.expectingping:
+            self.lastping=time.time()
+            self.expectingping=False
+        else:
+            self.sendMsg('PIN')
+
 
     @traceback
     def fl_IDN(self,prefix,params):

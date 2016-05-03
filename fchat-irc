@@ -12,7 +12,7 @@ logging.basicConfig(filename=mydir+os.sep+'irc.log',level=logging.DEBUG,
 ircfactory = ircserver.IRCServerFactory(reactor)
 
 #reactor.connectTCP("chat.f-list.net", 9799, flfactory) #Starts on login now
-reactor.listenTCP(8002, ircfactory)
+reactor.listenTCP(8002, ircfactory, interface='127.0.0.1')
 #reactor.flfactory=flfactory
 reactor.run()
 
