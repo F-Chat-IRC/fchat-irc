@@ -68,7 +68,7 @@ class FlistProtocol(WebSocketClientProtocol):
         '''Called once the WS session closes.'''
         self.flconnected = False
         logging.info ("WebSocket connection closed: {0}".format(reason))
-#        self.irc.dropConnection()
+        self.irc.transport.loseConnection()
 
     @traceback
     def chatLogin(self, nick, passwd,character=''):
