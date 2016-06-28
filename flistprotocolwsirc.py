@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+'''This is the main module that handles all the commands from F-list. (see https://wiki.f-list.net/F-Chat_Client_Commands for details)
+The lower block handles the https://wiki.f-list.net/Json_endpoints JSON, unifying it into a standard interface.'''
 import HTMLParser
 import urllib, urllib2, json
 import time, string
@@ -49,9 +51,9 @@ class FlistProtocol(WebSocketClientProtocol):
         self.sys_params = {}
         self.pinging=None
         self.expectingping=False
-        self.pingrate=60
+        self.pingrate=120
         self.lastping=time.time()
-        self.toomanypings=5
+        self.toomanypings=10
 
     @traceback
     def onConnect(self, response):
@@ -305,7 +307,8 @@ class FlistProtocol(WebSocketClientProtocol):
         self.expectingping=True
         if (time.time() - self.lastping) > (self.pingrate*self.toomanypings):
             logging.warn('Losing connection due to no ping reply.')
-            self.loseConnection()
+            self.irc.transport.loseConnection()
+            self.transport.loseConnection()
 
 #These are all callbacks for Flist commands
     @traceback

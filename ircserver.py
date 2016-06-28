@@ -1,3 +1,9 @@
+'''This module provides the factory that handles the IRC server. Several commands are translated directly to F-list, as documented here:
+https://wiki.f-list.net/F-Chat_Server_Commands
+Most of the functions are named for their IRC methods: https://tools.ietf.org/html/rfc2812 
+and the numeric names can be referenced here: https://www.alien.net.au/irc/irc2numerics.html
+'''
+
 from twisted.internet.protocol import ServerFactory
 from twisted.internet.task import LoopingCall, deferLater
 from twisted.internet.defer import inlineCallbacks
