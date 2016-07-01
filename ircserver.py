@@ -25,7 +25,7 @@ CREATED = datetime.datetime.now().strftime('%M:%H %d/%m/%y')
 
 class IRCServer(irc.IRC):
     def __init__(self,reactor):
-        self.MAXLENGTH=9999999
+        self.MAX_LENGTH=9999999
         self.flist=None
         self.reactor=reactor
         self.reactor.irc = self
