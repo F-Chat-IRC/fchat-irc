@@ -684,6 +684,15 @@ class FlistProtocol(WebSocketClientProtocol):
     @traceback
     def fl_FKS(self,prefix,params):
         '''Find Kink response.'''
+# {u'kinks': [551, 463], u'characters': [u'Trainer Georgina...
+        mchars=[h.unescape(x).encode('utf8') for x in params['characters']]
+        mchars = {c:self.chars[c] for c in mchars}
+        statusorder = sorted(mchars.keys(),key=lambda x: mchars[x]['status'])
+        for char in statusorder:
+            msg = self.userEncode(char)+'('+mchars[char]['gender']+'): '+mchars[char]['status']
+            if mchars[char]['statusmsg'] != '':
+               msg = msg + '('+mchars[char]['statusmsg']+')'
+            self.irc.userMsg('info','PRIVMSG '+self.irc.nick+' :'+msg)
         logging.info ('FKS: '+str(params))
 
     @traceback

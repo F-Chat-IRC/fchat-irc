@@ -82,11 +82,11 @@ class Bot:
         data = {}
         maintokens = {
         'kink:':{self.irc.flist.kinks[x]['name'].lower():x for x in self.irc.flist.kinks},
-        'gender:':["male", "female", "transgender", "herm", "shemale", "male-herm", "cunt-boy", "none"],
-        'orientation:':["straight", "gay", "bisexual", "asexual", "unsure", "bi - male preference", "bi - female preference", "pansexual", "bi-curious"],
-        'language:':["dutch", "english", "french", "spanish", "german", "russian", "chinese", "japanese", "portuguese", "korean", "arabic", "italian", "swedish", "other"],
-        'furrypref:':["no furry characters, just humans", "no humans, just furry characters", "furries ok, humans preferred", "humans ok, furries preferred", "furs and / or humans"],
-        'role:':["always dominant", "usually dominant", "switch", "usually submissive", "always submissive", "none"]}
+        'gender:':["Male", "Female", "Transgender", "Herm", "Shemale", "Male-Herm", "Cunt-boy", "None"],
+        'orientation:':["Straight", "Gay", "Bisexual", "Asexual", "Unsure", "Bi - male preference", "Bi - female preference", "Pansexual", "Bi-curious"],
+        'language:':["Dutch", "English", "French", "Spanish", "German", "Russian", "Chinese", "Japanese", "Portuguese", "Korean", "Arabic", "Italian", "Swedish", "Other"],
+        'furrypref:':["No furry characters, just humans", "No humans, just furry characters", "Furries ok, Humans Preferred", "Humans ok, Furries Preferred", "Furs and / or humans"],
+        'role:':["Always dominant", "Usually dominant", "Switch", "Usually submissive", "Always submissive", "None"]}
         type = ''
         oldwords = ''
         for word in params:
@@ -107,8 +107,10 @@ class Bot:
                         data[type[:-1]+'s'].append(maintokens[type][word])
                     else:
                         oldwords = word
-                elif word in maintokens[type]:
-                    data[type[:-1]+'s'].append(word)
+                elif word in [x.lower() for x in maintokens[type]]:
+                    for v in maintokens[type]:
+                        if v.lower() == word:
+                            data[type[:-1]+'s'].append(v)
                 else:
                     oldwords = word
         par = json.dumps(data)
