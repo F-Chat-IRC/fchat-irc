@@ -162,7 +162,8 @@ class FlistProtocol(WebSocketClientProtocol):
                     return chan
             except:
                 pass
-        raise ValueError ("I don't know a channel called "+str(channel))
+        return channel.lower()
+#        raise ValueError ("I don't know a channel called "+str(channel))
 
     @traceback
     def userEncode(self,username):

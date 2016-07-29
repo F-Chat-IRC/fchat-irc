@@ -127,15 +127,15 @@ class IRCServer(irc.IRC):
             self.reactor.callLater(2,self.irc_JOIN,prefix,params)
             return
         data = {}
-        try:
-            ch = [x.strip() for x in params[0].split(',')]
-            for chan in ch:
+        ch = [x.strip() for x in params[0].split(',')]
+        for chan in ch:
+            try:
                 data['channel'] = self.flist.chanDecode(chan)
                 par = json.dumps(data)
                 self.flist.sendMsg('JCH '+par)
                 if chan not in self.channels: self.channels.append(chan)
-        except ValueError:
-            self.serverMsg(irc.ERR_NOSUCHCHANNEL,params[0]+' :Channel unknown.')
+            except ValueError:
+                self.serverMsg(irc.ERR_NOSUCHCHANNEL,params[0]+' :Channel unknown.')
 
     @traceback
     def irc_PART(self, prefix, params):
