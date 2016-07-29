@@ -505,7 +505,7 @@ class FlistProtocol(WebSocketClientProtocol):
         desc = h.unescape(params['name']).encode('utf8')
         channel = self.chanEncode(h.unescape(params['title']).encode('utf8'))
         nick = self.irc.nick
-        self.irc.serverMsg(irc.RPL_INVITED,channel+' '+nick+' '+inviter+' :'+nick+' has been invited by '+inviter)
+        self.irc.serverMsg(345,channel+' '+nick+' '+inviter+' :'+nick+' has been invited by '+inviter)
 
     @traceback
     def fl_CON(self,prefix,params):
