@@ -415,9 +415,9 @@ class FlistProtocol(WebSocketClientProtocol):
         if user not in self.chans[name]['users']: self.chans[name]['users'].append(user)
         self.irc.userMsg(user,'JOIN '+self.chanEncode(name))
         if user in self.chans[name]['ops']:
-            self.irc.serverMsg(irc.RPL_CHANNELMODEIS,':+o '+self.userEncode(user),self.chanEncode(name))
+            self.irc.serverMsg(irc.RPL_CHANNELMODEIS,'+o '+self.userEncode(user),self.chanEncode(name))
         if user ==self.chans[name]['owner']:
-            self.irc.serverMsg(irc.RPL_CHANNELMODEIS,':+O '+self.userEncode(user),self.chanEncode(name))
+            self.irc.serverMsg(irc.RPL_CHANNELMODEIS,'+O '+self.userEncode(user),self.chanEncode(name))
 
     @traceback
     def fl_ICH(self,prefix,params):
@@ -447,9 +447,9 @@ class FlistProtocol(WebSocketClientProtocol):
         self.chans[name]['ops'] = ops
         for user in self.chans[name]['users']:
             if user in ops:
-                self.irc.serverMsg(irc.RPL_CHANNELMODEIS,':+o '+self.userEncode(user),self.chanEncode(name))
+                self.irc.serverMsg(irc.RPL_CHANNELMODEIS,'+o '+self.userEncode(user),self.chanEncode(name))
             if user ==self.chans[name]['owner']:
-                self.irc.serverMsg(irc.RPL_CHANNELMODEIS,':+O '+self.userEncode(user),self.chanEncode(name))
+                self.irc.serverMsg(irc.RPL_CHANNELMODEIS,'+O '+self.userEncode(user),self.chanEncode(name))
 
     @traceback
     def fl_COA(self,prefix,params):
@@ -457,7 +457,8 @@ class FlistProtocol(WebSocketClientProtocol):
         name = h.unescape(params['channel']).encode('utf8')
         user = h.unescape(params['character']).encode('utf8')
         self.chans[name]['ops'].append(user)
-        self.serverMsg(irc.RPL_CHANNELMODEIS,':+o '+self.userEncode(user),self.chanEncode(name))
+#:buZz!~buzz@space.nurdspace.nl MODE #nurdsbofh +o Petraea
+        self.serverMsg(irc.RPL_CHANNELMODEIS,'+o '+self.userEncode(user),self.chanEncode(name))
 
     @traceback
     def fl_COR(self,prefix,params):
@@ -465,7 +466,7 @@ class FlistProtocol(WebSocketClientProtocol):
         name = h.unescape(params['channel']).encode('utf8')
         user = h.unescape(params['character']).encode('utf8')
         self.chans[name]['ops'].remove(user)
-        self.serverMsg(irc.RPL_CHANNELMODEIS,':-o '+self.userEncode(user),self.chanEncode(name))
+        self.serverMsg(irc.RPL_CHANNELMODEIS,'-o '+self.userEncode(user),self.chanEncode(name))
 
     @traceback
     def fl_CSO(self,prefix,params):
@@ -473,9 +474,9 @@ class FlistProtocol(WebSocketClientProtocol):
         name = h.unescape(params['channel']).encode('utf8')
         user = h.unescape(params['character']).encode('utf8')
         oldowner = self.chans[name]['owner']
-        self.serverMsg(irc.RPL_CHANNELMODEIS,':-O '+self.userEncode(oldowner),self.chanEncode(name))
+        self.serverMsg(irc.RPL_CHANNELMODEIS,'-O '+self.userEncode(oldowner),self.chanEncode(name))
         self.chans[name]['owner'] = user
-        self.serverMsg(irc.RPL_CHANNELMODEIS,':+O '+self.userEncode(user),self.chanEncode(name))
+        self.serverMsg(irc.RPL_CHANNELMODEIS,'+O '+self.userEncode(user),self.chanEncode(name))
 
     @traceback
     def fl_CTU(self,prefix,params):
