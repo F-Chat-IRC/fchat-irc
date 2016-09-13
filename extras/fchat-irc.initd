@@ -14,7 +14,7 @@
 
 DESC="F-Chat IRC Gateway"
 NAME=fchat-irc
-USER=talloak
+USER=fchat
 DAEMON=/opt/fchat-irc/$NAME
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
