@@ -80,13 +80,13 @@ class FlistProtocol(WebSocketClientProtocol):
             self.flconnected = True
             self.characters=r['characters']
             self.default_character=r['default_character']
-        ircchars = [self.userEncode(x) for x in self.characters]
+#        ircchars = [self.userEncode(x) for x in self.characters]
         if not self.pinging:
             self.pinging = LoopingCall(self.cb_PING)
             self.pinging.start(self.pingrate)
-        logging.info('IRC safe char list: '+str(ircchars))
+        logging.info('IRC char list: '+str(self.characters))
         try:
-            num = ircchars.index(character)
+            num = self.characters.index(character)
             sel_char = self.characters[num]
         except:
             sel_char = self.default_character

@@ -130,7 +130,7 @@ class IRCServer(irc.IRC):
         ch = [x.strip() for x in params[0].split(',')]
         for chan in ch:
             try:
-                if chanlower().startswith('#adh'): chan = chan[1:]
+                if chan.lower().startswith('#adh'): chan = chan[1:]
                 data['channel'] = self.flist.chanDecode(chan)
                 par = json.dumps(data)
                 self.flist.sendMsg('JCH '+par)
