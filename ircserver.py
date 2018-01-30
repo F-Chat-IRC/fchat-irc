@@ -229,7 +229,7 @@ class IRCServer(irc.IRC):
     def irc_AWAY(self, prefix, params):
         '''Set or unset the away status.'''
         data = {}
-        if params[0]!='':
+        if len(params)>0:
             self.serverMsg(irc.RPL_NOWAWAY,':You have been marked as being away.')
             self.flist.oldsts = str(self.flist.chars[self.nick]['status'])
             self.flist.oldstsmsg = str(self.flist.chars[self.nick]['statusmsg'])
