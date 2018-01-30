@@ -5,8 +5,20 @@ import flistprotocolwsirc
 import ircserver
 import logging
 import os
+try:
+    from ConfigParser import ConfigParser
+except:
+    from configparser import ConfigParser
+
 mydir=os.path.dirname(os.path.realpath(__file__))
-logging.basicConfig(filename=mydir+os.sep+'irc.log',level=logging.DEBUG,
+
+config = ConfigParser()
+config.read(mydir+os.sep+'config.cfg')
+
+logpath = config.get('fchat-irc','logpath')
+loglevel = getattr(logging,config.get('fchat-irc','loglevel').upper())
+
+logging.basicConfig(filename=logpath+os.sep+'irc.log',level=loglevel,
          format="%(asctime)s;%(levelname)s;%(message)s",datefmt="%m%d%H%M")
 ircfactory = ircserver.IRCServerFactory(reactor)
 

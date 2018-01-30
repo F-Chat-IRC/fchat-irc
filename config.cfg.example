@@ -1,0 +1,3 @@
+[fchat-irc]
+logpath=/var/log/fchat
+loglevel=DEBUG
